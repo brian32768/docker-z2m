@@ -13,3 +13,7 @@ Currently the serial device setting is nailed down in compose.yaml.
 I think the files in the mosquitto and z2m folders are 
 generated and maintained by the containers, so I don't
 currently check them into github.
+
+## Note on project naming convention
+
+The github project is "docker-z2m" but normally I check it out to ~/docker/z2m/
