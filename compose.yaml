@@ -1,0 +1,49 @@
+networks:
+  proxy:
+    name: zero-trust
+    external: true
+  homeassistant:
+    name: homeassistant
+    external: true
+
+services:
+  mosquitto: # This name is used in the z2m configuration.
+    image: eclipse-mosquitto:latest
+    volumes:
+      - ${PWD}/mosquitto_config:/mosquitto/config
+    environment:
+      TZ: "America/Los_Angeles"
+    # I use mqtt to talk to IoT hardware so some ports have to be open to the LAN.
+    # 2025-03-17 unless this is just not true?? huh. Some kinda weird proxy magic happens?
+    # Hold the horses there, zigbee does not use the IoT network, it's not TCP/IP!!
+    # so if you only have Zigbee devices you don't need the port open.
+    ports:
+      - "9001:9001"
+      - "1883:1883" # Expose so others (besides z2m) can hit this broker.
+    restart: unless-stopped
+    networks:
+      proxy:
+        aliases:
+          - mqtt
+      homeassistant:
+        aliases:
+          - mosquitto
+    
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:latest-dev
+    depends_on:
+      - mosquitto
+    volumes:
+      - ${PWD}/z2m_data:/app/data
+      - /run/udev:/run/udev:ro
+    environment:
+      TZ: "America/Los_Angeles"
+    ports:
+      - "8088:8080"
+    devices:
+      - "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_6085be0c5c52ef118f722e53cc32aab1-if00-port0:/dev/ttyACM0"
+    restart: unless-stopped
+    networks:
+      homeassistant:
+        aliases:
+          - zigbee2mqtt

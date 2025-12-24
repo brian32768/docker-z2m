@@ -1,0 +1,39 @@
+homeassistant: false
+frontend: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://localhost
+serial:
+  port: /dev/ttyACM0
+  adapter: ember
+  disable_led: false
+  baudrate: 57600
+  rtscts: false
+advanced:
+  network_key:
+    - 251
+    - 25
+    - 255
+    - 197
+    - 143
+    - 18
+    - 181
+    - 34
+    - 101
+    - 142
+    - 91
+    - 98
+    - 38
+    - 175
+    - 205
+    - 191
+  pan_id: 19839
+  ext_pan_id:
+    - 81
+    - 115
+    - 36
+    - 19
+    - 137
+    - 12
+    - 118
+    - 215
