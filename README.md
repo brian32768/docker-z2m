@@ -17,3 +17,5 @@ currently check them into github.
 ## Note on project naming convention
 
 The github project is "docker-z2m" but normally I check it out to ~/docker/z2m/
+
+For example, "cd ~/docker/ && git clone https://github.com/brian32768/docker-z2m z2m"
