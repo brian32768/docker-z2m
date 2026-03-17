@@ -1,7 +1,4 @@
 networks:
-  proxy:
-    name: zero-trust
-    external: true
   homeassistant:
     name: homeassistant
     external: true
@@ -15,16 +12,13 @@ services:
       TZ: "America/Los_Angeles"
     # I use mqtt to talk to IoT hardware so some ports have to be open to the LAN.
     # 2025-03-17 unless this is just not true?? huh. Some kinda weird proxy magic happens?
-    # Hold the horses there, zigbee does not use the IoT network, it's not TCP/IP!!
+    # Hold your horses there, zigbee does not use the IoT network, it's not TCP/IP!!
     # so if you only have Zigbee devices you don't need the port open.
     ports:
       - "9001:9001"
       - "1883:1883" # Expose so others (besides z2m) can hit this broker.
     restart: unless-stopped
     networks:
-      proxy:
-        aliases:
-          - mqtt
       homeassistant:
         aliases:
           - mosquitto
